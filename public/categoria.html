@@ -1,0 +1,269 @@
+<html>
+    <head><meta charset="UTF-8"></head>
+    <style>
+        body {
+            font-family: cursive;
+            background-image: url('fundo.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #00788d; 
+        }
+
+        .container {          
+            background-color:  #fffdea36;
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.164);            
+        }
+
+        button {
+            padding: 10px 50px;
+            background-color: #0097b2;
+            color: #e0ffff;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            border-radius: 50px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.164);
+            font-family: cursive;
+        }
+
+        button:hover {
+            background-color: #007f96;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        label {       
+            color: #2d7f35;          
+            font-weight: bold;         
+            font-size: 20px;    
+        }
+
+        input[type="checkbox"] {
+            accent-color: #2d7f35;
+            width: 15px;
+            height: 15px;
+           
+        }
+
+        .logo {
+            background: #fffdea;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+        }
+
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; 
+        }
+
+        table {
+            width: 80%;
+            text-align: right;
+        }
+
+        p {
+            font-size: 45px;
+            font-weight: bolder;
+            color: #2d7f35;
+            margin-top: -15px;
+            margin-bottom: -5px;
+        }
+
+        .erro {
+            color: #c46211; 
+            font-size: 20px; 
+            font-weight: normal;
+            margin-top: 10px;
+        }
+       
+        .canvasContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px; 
+            
+            width: 95%;
+        }
+
+        .jogadores-container {
+            
+            background-color:  #fffdea36;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.164);
+        }
+
+        
+
+        .lista-jogadores {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+            gap: 10px; /* Espaço entre os nomes */
+            text-align: center;
+        }
+
+        .lista-jogadores div {
+            background-color: rgba(191, 233, 178, 0.63); /* Fundo leve */
+            padding: 5px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #2d7f35;
+        }
+    </style>
+    <body>
+        <div class="logo"><img src="logo1.png" width="982" height="270"></div>
+        <br><center> 
+            <div class="canvasContainer">
+        <div class="container">
+            <h2>Código da sala:</h2>
+            <p id="codigo"></p>
+            <h2>Escolha a(s) categoria(s) das palavras</h2>
+            <table> 
+                <tr>
+                    <td><label for="filmes">Filmes</label>
+                        <input type="checkbox" id="filmes"></td>
+                    <td><label for="marcas">Marcas</label>
+                        <input type="checkbox" id="marcas"></td>
+                    <td><label for="comidas">Comidas</label>
+                        <input type="checkbox" id="comidas"></td>
+                    <td><label for="profissões">Profissões</label>
+                        <input type="checkbox" id="profissões"></td>
+                </tr>
+            
+                <tr>
+                    <td><label for="países">Países</label>
+                        <input type="checkbox" id="países"></td>
+                    <td><label for="animais">Animais</label>
+                        <input type="checkbox" id="animais"></td>
+                    <td><label for="clubes">Clubes</label>
+                        <input type="checkbox" id="clubes"></td>
+                    <td><label for="turma">Turma</label>
+                        <input type="checkbox" id="turma"></td>
+                </tr>
+            </table>
+            <p  class="erro" id="erro"></p>  
+        <br>
+        <p></p><button id="botaoComecar" onclick="comecarJogo()">Começar jogo</button>
+        </div>
+        <div class="jogadores-container">
+            <h2>Jogadores na Sala</h2>
+            <div id="listaJogadores" class="lista-jogadores"></div>
+        </div>
+    </div></center>
+    </body>
+
+   
+       
+       <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+<script>
+  
+
+ 
+    function comecarJogo() {
+        if (document.querySelectorAll("input[type=checkbox]:checked").length > 0) {
+            
+            const codigoSala = localStorage.getItem("codigoSala");
+            
+            const checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+            const categoriasSelecionadas = Array.from(checkboxes).map(cb => cb.id);
+
+    
+           
+            socket.emit("iniciarJogo", { codigoSala, categoriasSelecionadas });
+        } else {
+            document.getElementById("erro").innerHTML = "* Tem de selecionar pelo menos uma categoria";
+        }
+    }
+
+    
+
+    const socket = io();
+
+    
+
+    window.onload = function () {
+    let username = localStorage.getItem("username");
+    let codigoSala = localStorage.getItem("codigoSala");
+
+    
+
+   
+
+    document.getElementById("codigo").innerText = `#${codigoSala}`;
+
+    // 🔹 Agora garantimos que o servidor recebe o nome correto
+    socket.emit("entrarSala", { codigoSala, username, atualizar: true });
+    
+    
+    socket.on("atualizarJogadores", (dados) => {
+    console.log("✅ Dados recebidos:", dados);
+
+    let lista = document.getElementById("listaJogadores");
+    lista.innerHTML = ""; // Limpa a lista para reconstruí-la corretamente.
+
+    // 🔹 Mantém o nome correto baseado no localStorage (não deixa ser alterado)
+    
+    console.log(`🙋‍♂️ Meu nome correto: ${username}`);
+    
+
+
+    dados.jogadores.forEach(jogador => {
+        let item = document.createElement("div");
+        item.innerText = jogador.nome;
+
+        lista.appendChild(item);
+    });
+
+    // 🔹 Verifica se o usuário é o criador da sala
+    let souCriador = username === dados.criador;
+    localStorage.setItem("souCriador", souCriador);
+    document.querySelectorAll("input[type=checkbox]").forEach(input => {
+        input.disabled = !souCriador;
+    });
+
+    document.getElementById("botaoComecar").disabled = !souCriador;
+    console.log(`🙋‍♂️ Meu nome correto: ${username}`);
+});
+
+
+
+socket.on("redirecionarParaJogo", () => {
+    console.log("🚀 Redirecionando todos para o jogo!");
+    window.location.href = "index.html";
+});
+    
+
+    socket.emit("manterSala", codigoSala);
+};
+
+
+
+
+
+
+
+</script>
+
+        
+   
+</html>
