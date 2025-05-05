@@ -1,3 +1,4 @@
+
 <html>
     <style>
         body {
@@ -130,7 +131,7 @@
 }
 
         
-        const socket = io("http://localhost:3000");
+        const socket = io();
 
         function criarSala() {
             let username = document.getElementById("username").value.trim();
@@ -157,4 +158,5 @@
         
     
     </script>
+
 </html>
