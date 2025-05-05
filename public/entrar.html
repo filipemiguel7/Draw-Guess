@@ -1,0 +1,140 @@
+<html>
+    <head><meta charset="UTF-8"></head>
+    <style>
+        body {
+            font-family: cursive;
+            background-image: url('fundo.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #00788d; 
+        }
+
+        .container {          
+            background-color:  #fffdea36;
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.164);            
+        }
+
+        button {
+            padding: 10px 50px;
+            background-color: #0097b2;
+            color: #e0ffff;
+            margin-top: 5%;
+            margin-bottom: 5%;
+            border-radius: 50px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.164);
+            font-family: cursive;
+        }
+
+        button:hover {
+            background-color: #007f96;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+
+        .logo {
+            background: #fffdea;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+        }
+
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; 
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            border-radius: 10px;
+            border:3px solid #2d7f35;
+            width: 100px;
+            height: 50px;
+            background-color: #e2ffd400;
+            font-size: 25px;
+            text-align: center;
+            color: #2d7f35;
+            font-weight: bold;
+            outline: none;
+        }
+        input:focus {
+            border: 3px solid #2d7f35; 
+            box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); 
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        ::placeholder {
+            color: #2d7f35b7;
+        }
+
+    </style>
+    <body>
+        <div class="logo"><img src="logo1.png" width="982" height="270"></div>
+        <br><center> 
+        <div class="container">
+            <h2>Introduza o código da sala:</h2>
+            <input id="codigo" type="text" maxlength="4" placeholder="0000" oninput="validarCodigo(this)"></input>         
+        <br>
+        <button onclick="entrarSala()">Entrar na sala</button>
+        </div></center>
+    </body>
+
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+
+        function validarCodigo(input) {
+            input.value = input.value.replace(/[^0-9]/g, ''); 
+            if (input.value.length > 4) {
+                input.value = input.value.slice(0, 4); 
+            }
+        }
+        const socket = io("http://localhost:3000");
+    
+       
+
+        function entrarSala() {
+            let username = localStorage.getItem("username"); 
+            let codigoSala = document.getElementById("codigo").value.trim();
+
+   
+
+    if (codigoSala.length !== 4) {
+        alert("Código inválido!");
+        return;
+    }
+
+   
+    socket.emit("entrarSala", { codigoSala, username, redirecionar: true, atualizar: false});
+
+    
+    socket.on("salaValida", () => {
+    window.location.href = "categoria.html";
+});
+
+    
+}
+
+    </script>
+    
+</html>
