@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
-
+const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -10,6 +10,11 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/criar.html"));
+  }); 
 
 let salas = {};
 let salasProtegidas = {};
@@ -17,19 +22,17 @@ let jogadoresProntos = {};
 const socketToSala = {};
 let intervalos = {};
 
+
 const palavras = {
     animais: ['abelha', 'viúva negra', 'avestruz', 'camarão', 'bode','bacalhau', 'cisne', 'coala', 'gorila', 'esquilo','grilo', 'hiena', 'iguana', 'beija flor', 'mocho','porco', 'polvo', 'ratazana', 'cegonha', 'gaivota'],
-    filmes: ['cadeira', 'mesa', 'computador', 'telefone', 'janela'],
-    comidas: ['pizza', 'hamburguer', 'maçã', 'banana', 'chocolate'],
-    profissões: ['carpinteiro', 'médico', 'professor'],
-    marcas: ['nike', 'apple', 'coca cola'],
-    turma: ['joão', 'maria', 'ana'],
-    países: ['portugal', 'brasil', 'espanha'],
-    clubes: ['porto', 'benfica', 'sporting']
-};
-
-
-
+    filmes:  ['star wars', 'harry potter', 'senhor dos aneis', 'rei leao', 'nemo','titanic', '007', 'vingadores', 'batman', 'avatar','sherek', 'toy story', 'carros', 'velocidade furiosa', 'homem-aranha','transformers',],
+    turma:  ['rudraksh','Fonseca', 'David', 'Diana', 'Alexandra', 'Diogo','Felipe','Francisca', 'dorin', 'ramos', 'monica','henrique', 'margarida', 'brito', 'gonçalo', 'miguel','costa', 'jacinto', 'ulisses', 'rui', 'tomás'],
+    clubes:  ['barcelona','sporting', 'benfica', 'porto', 'braga', 'M.united','M.city','real madrid', 'at.madrid', 'psg', 'milan','juventus', 'inter', 'arsenal', 'chelsea', 'bayern','ajax', 'dortmund', 'tothenham'],
+    países:  ['croacia','albania', 'reino unido', 'nova zelandia', 'canada', 'croreia do sul','argentina','egito', 'angola', 'madagascar', 'jamaica','peru', 'cabo verde', 'brasil', 'bahamas', 'uruguai','índia', 'dinamarca', 'austrália', 'grécia'],
+    comidas:  ['tacos','cozido à portuguesa', 'bacalhau à brás', 'espinafre', 'canela', 'romã','bifana','pastel de nata', 'lasanha', 'amora', 'arroz','atum', 'sardinha', 'ostras', 'castanhas', 'iogurte','picanha', 'açaí', 'sal', 'costeleta','cheesecake','mousse de chocolate'],
+    profissões:  ['bibliotecário','modelo', 'cozinheiro', 'astrônomo', 'jornalista', 'professor','bombeiro','árbitro', 'ator', 'enfermeiro', 'jardineiro','mecânico', 'pastor', 'realizador', 'surfista', 'treinador','veterinário', 'dj', 'escultor', 'lutador'],
+    marcas: ['Ralph Lauren', 'Ferrari', 'Lamborghini', 'Snapchat', 'KFC', 'Peugeot', 'Chrome', 'Starbucks', 'Puma', 'Olá', 'Red Bull', 'Android', 'NOS','Volkswagen', 'Jordan', 'Timberland', 'Santander', 'Discord'],
+}; 
     
 
     
