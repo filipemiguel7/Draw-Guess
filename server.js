@@ -10,11 +10,13 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
-app.use(express.static(path.join(__dirname, 'public')));
-
+// 🔹 Primeira rota definida: serve criar.html quando visitam "/"
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'criar.html'));
 });
+
+// 🔹 Depois servimos o resto dos ficheiros estáticos (imagens, outros HTML, JS...)
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 let salas = {};
