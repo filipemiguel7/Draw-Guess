@@ -10,11 +10,12 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/criar.html"));
-  }); 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'criar.html'));
+});
+
 
 let salas = {};
 let salasProtegidas = {};
@@ -24,13 +25,13 @@ let intervalos = {};
 
 
 const palavras = {
-    animais: ['abelha', 'viúva negra', 'avestruz', 'camarão', 'bode','bacalhau', 'cisne', 'coala', 'gorila', 'esquilo','grilo', 'hiena', 'iguana', 'beija flor', 'mocho','porco', 'polvo', 'ratazana', 'cegonha', 'gaivota'],
-    filmes:  ['star wars', 'harry potter', 'senhor dos aneis', 'rei leao', 'nemo','titanic', '007', 'vingadores', 'batman', 'avatar','sherek', 'toy story', 'carros', 'velocidade furiosa', 'homem-aranha','transformers',],
-    turma:  ['rudraksh','Fonseca', 'David', 'Diana', 'Alexandra', 'Diogo','Felipe','Francisca', 'dorin', 'ramos', 'monica','henrique', 'margarida', 'brito', 'gonçalo', 'miguel','costa', 'jacinto', 'ulisses', 'rui', 'tomás'],
-    clubes:  ['barcelona','sporting', 'benfica', 'porto', 'braga', 'M.united','M.city','real madrid', 'at.madrid', 'psg', 'milan','juventus', 'inter', 'arsenal', 'chelsea', 'bayern','ajax', 'dortmund', 'tothenham'],
-    países:  ['croacia','albania', 'reino unido', 'nova zelandia', 'canada', 'croreia do sul','argentina','egito', 'angola', 'madagascar', 'jamaica','peru', 'cabo verde', 'brasil', 'bahamas', 'uruguai','índia', 'dinamarca', 'austrália', 'grécia'],
+    animais: ['abelha', 'viúva negra', 'avestruz', 'camarão', 'bode','bacalhau', 'cisne', 'koala', 'gorila', 'esquilo','grilo', 'hiena', 'iguana', 'beija flor', 'mocho','porco', 'polvo', 'ratazana', 'cegonha', 'gaivota'],
+    filmes:  ['Star Wars', 'Harry Potter', 'Senhor dos Anéis', 'Rei Leão', 'Nemo','Titanic', '007', 'Vingadores', 'Batman', 'Avatar','Shrek', 'Toy Story', 'Carros', 'Velocidade Furiosa', 'Homem-Aranha','Transformers',],
+    turma:  ['Rudraksh','Fonseca', 'David', 'Diana', 'Alexandra', 'Diogo','Filipe','Francisca', 'Dorin', 'Gonçalo Ramos', 'Mónica','Henrique', 'Margarida', 'Brito', 'Gonçalo Martins', 'Miguel','Costa', 'Jacinto', 'Ulisses', 'Rui', 'Tomás'],
+    clubes:  ['Barcelona','Sporting', 'Benfica', 'Porto', 'Braga', 'Manchester United','Manchester City','Real Madrid', 'Atlético de Madrid', 'PSG', 'Milan','Juventus', 'Inter', 'Arsenal', 'Chelsea', 'Bayern Munique','Ajax', 'Dortmund', 'Tottenham'],
+    países:  ['Croácia','Albânia', 'Reino Unido', 'Nova Zelândia', 'Canadá', 'Croreia do Sul','Argentina','Egito', 'Angola', 'Madagascar', 'Jamaica','Peru', 'Cabo Verde', 'Brasil', 'Bahamas', 'Uruguai','Índia', 'Dinamarca', 'Austrália', 'Grécia'],
     comidas:  ['tacos','cozido à portuguesa', 'bacalhau à brás', 'espinafre', 'canela', 'romã','bifana','pastel de nata', 'lasanha', 'amora', 'arroz','atum', 'sardinha', 'ostras', 'castanhas', 'iogurte','picanha', 'açaí', 'sal', 'costeleta','cheesecake','mousse de chocolate'],
-    profissões:  ['bibliotecário','modelo', 'cozinheiro', 'astrônomo', 'jornalista', 'professor','bombeiro','árbitro', 'ator', 'enfermeiro', 'jardineiro','mecânico', 'pastor', 'realizador', 'surfista', 'treinador','veterinário', 'dj', 'escultor', 'lutador'],
+    profissões:  ['bibliotecário','modelo', 'cozinheiro', 'astrônomo', 'jornalista', 'professor','bombeiro','árbitro', 'ator', 'enfermeiro', 'jardineiro','mecânico', 'pastor', 'realizador', 'surfista', 'treinador','veterinário', 'DJ', 'escultor', 'lutador'],
     marcas: ['Ralph Lauren', 'Ferrari', 'Lamborghini', 'Snapchat', 'KFC', 'Peugeot', 'Chrome', 'Starbucks', 'Puma', 'Olá', 'Red Bull', 'Android', 'NOS','Volkswagen', 'Jordan', 'Timberland', 'Santander', 'Discord'],
 }; 
     
