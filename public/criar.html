@@ -98,7 +98,7 @@
         <br><center>
         <div class="container">
         <h2>Crie um nome para jogar</h2>
-        <input id="username" type="text" placeholder="Username" oninput="validarUsername(this)"></input>
+        <input id="username" type="text" placeholder="Usernme" oninput="validarUsername(this)"></input>
         <p style="color: #c46211;" id="erro"></p>
         <br>
         <button onclick="criarSala()">Criar Sala</button>
@@ -144,12 +144,12 @@
 
             socket.emit("criarSala", username);
 
-            socket.on("salaCriada", (codigo) => {
-                console.log("🔹 Sala criada com código:", codigo);
-                localStorage.setItem("codigoSala", codigo);
+            socket.on("salaCriada", (codigoSala) => {
+                console.log("🔹 Sala criada com código:", codigoSala);
+                localStorage.setItem("codigoSala", codigoSala);
                 
                 // 🔹 IMPORTANTE: Envia um sinal ao servidor para não remover a sala
-                socket.emit("manterSala", codigo);
+                socket.emit("manterSala", codigoSala);
                 
                 window.location.href = "categoria.html";
             });

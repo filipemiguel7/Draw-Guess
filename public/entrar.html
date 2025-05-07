@@ -129,7 +129,7 @@
     socket.emit("entrarSala", { codigoSala, username, redirecionar: true, atualizar: false});
 
     
-    socket.on("salaValida", () => {
+    socket.on("salaValida", (codigoSala) => {
     window.location.href = "categoria.html";
 });
 
