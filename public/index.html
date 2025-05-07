@@ -434,7 +434,11 @@ let codigoSala = localStorage.getItem("codigoSala");
 let possoDesenhar = false;
 
 window.onload = function () {
-    
+    const souCriador = localStorage.getItem("souCriador") === "true";
+
+if (!souCriador) {
+    document.getElementById("btnProximaRonda").disabled = true;
+}
     console.log(`🙋‍♂️ Meu nome correto: ${username}`);
     socket.emit("entrarSala", { codigoSala, username });
     socket.emit("jogadorPronto", { codigoSala, username });
