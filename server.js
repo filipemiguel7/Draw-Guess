@@ -76,7 +76,7 @@ io.on("connection", (socket) => {
             criador: salas[codigoSala].criador,
             
         });
-        io.to(codigoSala).emit("salaValida", { codigoSala });
+        io.to(codigoSala).emit("salaValida", codigoSala );
         }
     
         console.log(`✅ Jogador ${username} entrou (ou reconectou) na sala ${codigoSala}`);
