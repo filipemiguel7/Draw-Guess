@@ -130,6 +130,7 @@
 
     
     socket.on("salaValida", (codigoSala) => {
+        localStorage.setItem("codigoSala", codigoSala);
     window.location.href = "categoria.html";
 });
 
