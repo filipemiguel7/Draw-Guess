@@ -635,9 +635,9 @@ socket.on("comecarRonda", ({ codigoSala }) => {
     socket.emit('proximaRonda', { codigoSala }); 
    
     });
-socket.on("mostrarModalFim", () => {
-   atualizarTabelaFimDoJogo(jogadores);
-   document.getElementById("vencedorTexto").innerText = `🏆 Vencedor: ${vencedor}`;
+socket.on("mostrarModalFim", ({ jogadores, vencedor }) => {
+    atualizarTabelaFimDoJogo(jogadores);
+    document.getElementById("vencedorTexto").innerText = `🏆 Vencedor: ${vencedor}`;
     document.getElementById("modalFim").style.display = "flex";
 });
 function atualizarTabelaFimDoJogo(jogadores) {
