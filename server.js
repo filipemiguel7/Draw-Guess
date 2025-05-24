@@ -27,12 +27,12 @@ let intervalos = {};
 
 
 const palavras = {
-    animais: ['abelha', 'viúva negra', 'avestruz', 'camarão', 'bode','bacalhau', 'cisne', 'koala', 'gorila', 'esquilo','grilo', 'hiena', 'iguana', 'beija flor', 'mocho','porco', 'polvo', 'ratazana', 'cegonha', 'gaivota'],
-    filmes:  ['Star Wars', 'Harry Potter', 'Senhor dos Anéis', 'Rei Leão', 'Nemo','Titanic', '007', 'Vingadores', 'Batman', 'Avatar','Shrek', 'Toy Story', 'Carros', 'Velocidade Furiosa', 'Homem-Aranha','Transformers',],
+    animais: ['abelha', 'viúva negra', 'avestruz', 'camarão', 'bode','bacalhau', 'cisne', 'koala', 'gorila', 'esquilo','grilo', 'hiena', 'iguana', 'beija flor', 'mocho','porco', 'polvo', 'ratazana', 'cegonha', 'gaivota', 'lagosta', 'peixe espada'],
+    filmes:  ['Star Wars', 'Harry Potter', 'Senhor dos Anéis', 'Rei Leão', 'Nemo','Titanic', '007', 'Vingadores', 'Batman', 'Avatar','Shrek', 'Toy Story', 'Carros', 'Velocidade Furiosa', 'Homem-Aranha','Transformers', 'Indiana Jones'],
     turma:  ['Rudraksh','Fonseca', 'David', 'Diana', 'Alexandra', 'Diogo','Filipe','Francisca', 'Dorin', 'Gonçalo Ramos', 'Mónica','Henrique', 'Margarida', 'Brito', 'Gonçalo Martins', 'Miguel','Costa', 'Jacinto', 'Ulisses', 'Rui', 'Tomás'],
-    clubes:  ['Barcelona','Sporting', 'Benfica', 'Porto', 'Braga', 'Manchester United','Manchester City','Real Madrid', 'Atlético de Madrid', 'PSG', 'Milan','Juventus', 'Inter', 'Arsenal', 'Chelsea', 'Bayern Munique','Ajax', 'Dortmund', 'Tottenham'],
+    clubes:  ['Barcelona','Sporting', 'Benfica', 'Porto', 'Braga', 'Manchester United','Manchester City','Real Madrid', 'Atlético de Madrid', 'PSG', 'Milan','Juventus', 'Inter', 'Arsenal', 'Chelsea', 'Bayern Munique','Ajax', 'Dortmund', 'Tottenham', 'Marselha', 'Roma', 'Liverpool', 'Sevilha'],
     países:  ['Croácia','Albânia', 'Reino Unido', 'Nova Zelândia', 'Canadá', 'Coreia do Sul','Argentina','Egito', 'Angola', 'Madagáscar', 'Jamaica','Peru', 'Cabo Verde', 'Brasil', 'Bahamas', 'Uruguai','Índia', 'Dinamarca', 'Austrália', 'Grécia'],
-    comidas:  ['taco','cozido à portuguesa', 'bacalhau à brás', 'espinafre', 'canela', 'romã','bifana','pastel de nata', 'lasanha', 'amora', 'arroz','atum', 'sardinha', 'ostras', 'castanha', 'iogurte','picanha', 'açaí', 'sal', 'costeleta','cheesecake','mousse de chocolate'],
+    comidas:  ['taco','cozido à portuguesa', 'bacalhau à brás', 'espinafre', 'canela', 'romã','bifana','pastel de nata', 'lasanha', 'amora', 'arroz','rebuçado', 'sardinha', 'ostra', 'castanha', 'iogurte','picanha', 'açaí', 'sal', 'costeleta','cheesecake','mousse de chocolate'],
     profissões:  ['bibliotecário','modelo', 'cozinheiro', 'astrônomo', 'jornalista', 'professor','bombeiro','árbitro', 'ator', 'enfermeiro', 'jardineiro','mecânico', 'pastor', 'realizador', 'surfista', 'treinador','veterinário', 'DJ', 'escultor', 'lutador'],
     marcas: ['Ralph Lauren', 'Ferrari', 'Lamborghini', 'Snapchat', 'KFC', 'Peugeot', 'Chrome', 'Starbucks', 'Puma', 'Olá', 'Red Bull', 'Android', 'NOS','Volkswagen', 'Jordan', 'Timberland', 'Santander', 'Discord'],
 }; 
