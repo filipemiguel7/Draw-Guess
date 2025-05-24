@@ -333,16 +333,59 @@
         cursor: not-allowed;
     }
 
-    
-#modalFim .modal-content table {
-    font-size: 1.2em;
+
+
+
+#tabelaPontuacoes table {
     width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-#modalFim .modal-content th,
-#modalFim .modal-content td {
+#tabelaPontuacoes th,
+#tabelaPontuacoes td {
+    border: 2px solid #d7aa74;
     padding: 10px;
+    font-size: 18px;
 }
+
+#tabelaPontuacoes th {
+    background-color: #f0d9b5;
+    color: #c46211;
+    font-weight: bold;
+}
+
+#tabelaPontuacoes td {
+    background-color: #fff2df;
+    color: #663300;
+}
+
+#vencedorTexto {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin: 15px 0 25px;
+}
+
+#btncontinuarJogo, #btnsairDoJogo {
+    font-size: 18px;
+    padding: 12px 30px;
+    margin: 0 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#btncontinuarJogo {
+    background-color: #2d9c34;
+    color: white;
+}
+
+#btnsairDoJogo {
+    background-color: #c42c11;
+    color: white;
+}
+
 
 
 
@@ -435,13 +478,13 @@
         </div>
     </div>
 
-    <div id="modalFim" style="display: none;" class="modal">
+    <div id="modalFim" style="display: none; width: 65%;" class="modal">
         <div class="modal-content">
             <h2>🏁 Fim do jogo!</h2>
             <div id="tabelaPontuacoes"></div>
             <p id="vencedorTexto"></p>
             <button id="btncontinuarJogo" onclick="continuarJogo()">Continuar</button>
-            <button id="btnsairDoJogo" style="background-color: #c42c11;" onclick="sairDoJogo()">Terminar Jogo</button>
+            <button id="btnsairDoJogo" onclick="sairDoJogo()">Terminar Jogo</button>
         </div>
     </div>
     
