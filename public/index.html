@@ -234,7 +234,7 @@
             cursor: pointer;
         }
 
-        .color-button.white { background-color: rgb(207, 207, 207); }
+        .color-button.white { background-color: rgb(223, 223, 223); }
         .color-button.black { background-color: black; }
         .color-button.green { background-color: darkgreen; }
         .color-button.red { background-color: rgb(255, 0, 0); }
@@ -333,7 +333,26 @@
         cursor: not-allowed;
     }
 
-  
+    .modal-fim {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.conteudo-modal {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+}
+
 
     </style>
 </head>
@@ -363,7 +382,7 @@
                 <div class="toolbar">
                    
                     <div class="color-buttons">
-                        <div class="color-button white" data-cor="white" style="border: 1px solid black;" onclick="mudarCor('rgb(207, 207, 207)')"></div>
+                        <div class="color-button white" data-cor="white" style="border: 1px solid black;" onclick="mudarCor('rgb(223, 223, 223)')"></div>
                         <div class="color-button black" data-cor="black" onclick="mudarCor('black')"></div>
                         <div class="color-button green" data-cor="green" onclick="mudarCor('darkgreen')"></div>
                         <div class="color-button red" data-cor="red" onclick="mudarCor('red')"></div>
@@ -422,6 +441,17 @@
             <p id="palavra"></p>
         </div>
     </div>
+
+    <div id="modalFim" style="display: none;" class="modal-fim">
+        <div class="conteudo-modal">
+            <h2>🏁 Fim do jogo!</h2>
+            <div id="tabelaPontuacoes"></div>
+            <p id="vencedorTexto"></p>
+            <button id="btncontinuarJogo" onclick="continuarJogo()">Continuar</button>
+            <button id="btnsairDoJogo" onclick="sairDoJogo()">Sair</button>
+        </div>
+    </div>
+    
 </body>
 
 <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
@@ -438,6 +468,8 @@ window.onload = function () {
 
 if (!souCriador) {
     document.getElementById("btnProximaRonda").disabled = true;
+    document.getElementById("btncontinuarJogo").disabled = true;
+    document.getElementById("btnsairDoJogo").disabled = true;
 }
     console.log(`🙋‍♂️ Meu nome correto: ${username}`);
     socket.emit("entrarSala", { codigoSala, username });
@@ -456,7 +488,10 @@ if (!souCriador) {
     });
 
 
-socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nomeDesenhador, tempo }) => {
+socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nomeDesenhador, tempo, fimDoCiclo }) => {
+    if (fimDoCiclo) {
+        mostrarModalFimDeJogo();
+    } else {
     const modal = document.getElementById("novaRonda");
     const palavraModal = document.getElementById("palavra");
     const desenhadorModal = document.getElementById("desenhador");
@@ -491,7 +526,7 @@ socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nom
     setTimeout(() => {
         modal.style.display = 'none';
         socket.emit('iniciarRonda', { codigoSala });
-    }, 8000);
+    }, 8000);}
 });
 
 
@@ -582,6 +617,37 @@ socket.on("comecarRonda", ({ codigoSala }) => {
     socket.emit('proximaRonda', { codigoSala }); 
    
     });
+
+    function mostrarModalFimDeJogo() {
+    // Ordenar jogadores
+    const jogadores = JSON.parse(localStorage.getItem("jogadoresSala")) || [];
+
+    jogadores.sort((a, b) => b.pontos - a.pontos);
+
+    const tabela = jogadores.map((j, i) => `<p>${i+1}. ${j.nome} - ${j.pontos} pts</p>`).join('');
+    document.getElementById("tabelaPontuacoes").innerHTML = tabela;
+
+    if (jogadores[0]) {
+        document.getElementById("vencedorTexto").innerText = `🥇 Vencedor: ${jogadores[0].nome}`;
+    }
+
+    document.getElementById("modalFim").style.display = "flex";
+}
+
+function sairDoJogo() {
+    const codigoSala = localStorage.getItem("codigoSala");
+    socket.emit("terminarJogo", codigoSala); // 👈 envia evento global
+}
+
+function continuarJogo() {
+    document.getElementById("modalFim").style.display = "none";
+    socket.emit("resetarRondas", localStorage.getItem("codigoSala")); // novo evento
+}
+
+socket.on("jogoTerminado", () => {
+    window.location.href = "categoria.html";
+});
+
 
 // PALPITES
     function enviarMensagem() {

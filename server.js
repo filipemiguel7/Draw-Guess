@@ -54,6 +54,7 @@ io.on("connection", (socket) => {
             jogador.id = socket.id; // Atualiza o ID do socket (reconexão)
         } else {
             salas[codigoSala].jogadores.push({ id: socket.id, nome: username, pontos: 0 });
+            salas[codigoSala].ordemDesenhadores.push(username);
         }
         io.to(codigoSala).emit("atualizarJogadores", {
             jogadores: salas[codigoSala].jogadores,
@@ -101,7 +102,8 @@ io.on("connection", (socket) => {
             criadorSocketId: socket.id, 
             categorias: [],
             palavrasUsadas: new Set(),
-            desenhadoresUsados: new Set()
+            ordemDesenhadores: [username],  // 👈 lista fixa de ordem
+            indiceDesenhadorAtual: 0 
         };
         salasProtegidas[codigoSala] = true;
         socket.join(codigoSala);
@@ -145,6 +147,18 @@ io.on("connection", (socket) => {
         iniciarNovaRonda(codigoSala);
     });
     
+    socket.on("resetarRondas", (codigoSala) => {
+        const sala = salas[codigoSala];
+        if (!sala) return;
+        sala.indiceDesenhadorAtual = 0;
+        socket.to(codigoSala).emit('comecarRonda', { codigoSala });
+    });
+    
+    socket.on("terminarJogo", (codigoSala) => {
+        io.to(codigoSala).emit("jogoTerminado");
+    });
+    
+
     socket.on("jogadorPronto", ({ codigoSala, username }) => {
         if (!salas[codigoSala]) return;
     
@@ -226,20 +240,16 @@ function iniciarNovaRonda(codigoSala) {
     const sala = salas[codigoSala];
     if (!sala) return;
 
-    // ⚡ Escolhe o desenhador
-    let jogadoresDisponiveis = sala.jogadores.filter(j => !sala.desenhadoresUsados.has(j.id));
-    
-    if (jogadoresDisponiveis.length === 0) {
-        sala.desenhadoresUsados.clear(); // Todos já desenharam? Reset!
-        jogadoresDisponiveis = [...sala.jogadores];
-    }
+    const ordem = sala.ordemDesenhadores;
+    const i = sala.indiceDesenhadorAtual;
 
-    const desenhador = jogadoresDisponiveis[Math.floor(Math.random() * jogadoresDisponiveis.length)];
-    sala.desenhadoresUsados.add(desenhador.id);
+    const nomeDesenhador = ordem[i];
+    const fimDoCiclo = (i + 1) === ordem.length;
+    // Atualiza o índice para a próxima ronda
+    sala.indiceDesenhadorAtual = (i + 1) % ordem.length;
 
-    // Marca apenas ele como desenhador
-    sala.jogadores.forEach(j => j.desenhador = false);
-    desenhador.desenhador = true;
+    // Marca quem é o desenhador
+    sala.jogadores.forEach(j => j.desenhador = (j.nome === nomeDesenhador));
 
     // ⚡ Escolhe palavra
     const categoriasValidas = sala.categorias.filter(c => palavras[c]);
@@ -266,9 +276,10 @@ function iniciarNovaRonda(codigoSala) {
         codigoSala,
         categoria,
         palavra,
-        desenhadorId: desenhador.id,
-        nomeDesenhador: desenhador.nome,
+        desenhadorId: sala.jogadores.find(j => j.nome === nomeDesenhador).id,
+        nomeDesenhador,
         tempo: tempoRonda,
+        fimDoCiclo 
         
     });
 }
