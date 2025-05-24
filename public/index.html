@@ -366,7 +366,7 @@
                 <div class="toolbar">
                    
                     <div class="color-buttons">
-                        <div class="color-button white" data-cor="white" style="border: 1px solid black;" onclick="mudarCor('rgb(223, 223, 223)')"></div>
+                        <div class="color-button white" data-cor="white" onclick="mudarCor('rgb(223, 223, 223)')"></div>
                         <div class="color-button black" data-cor="black" onclick="mudarCor('black')"></div>
                         <div class="color-button green" data-cor="green" onclick="mudarCor('darkgreen')"></div>
                         <div class="color-button red" data-cor="red" onclick="mudarCor('red')"></div>
@@ -472,10 +472,8 @@ if (!souCriador) {
     });
 
 
-socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nomeDesenhador, tempo, fimDoCiclo }) => {
-    if (fimDoCiclo) {
-        mostrarModalFimDeJogo();
-    } else {
+socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nomeDesenhador, tempo }) => {
+    
     const modal = document.getElementById("novaRonda");
     const palavraModal = document.getElementById("palavra");
     const desenhadorModal = document.getElementById("desenhador");
@@ -510,7 +508,7 @@ socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nom
     setTimeout(() => {
         modal.style.display = 'none';
         socket.emit('iniciarRonda', { codigoSala });
-    }, 8000);}
+    }, 8000);
 });
 
 
@@ -544,7 +542,8 @@ tempoElemento.textContent = Math.floor(tempo);
 });
 
 
-socket.on("fimDaRonda", ({ palavra, vencedor, jogadores, pontos, desenhador }) => {    
+socket.on("fimDaRonda", ({ palavra, vencedor, jogadores, pontos, desenhador }) => { 
+       
     let criadorSala = localStorage.getItem("souCriador");
     
 
@@ -601,7 +600,9 @@ socket.on("comecarRonda", ({ codigoSala }) => {
     socket.emit('proximaRonda', { codigoSala }); 
    
     });
-
+socket.on("mostrarModalFim", () => {
+  mostrarModalFimDeJogo();
+});
     function mostrarModalFimDeJogo() {
     // Ordenar jogadores
     const jogadores = JSON.parse(localStorage.getItem("jogadoresSala")) || [];

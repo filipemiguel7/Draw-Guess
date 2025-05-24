@@ -133,6 +133,9 @@ io.on("connection", (socket) => {
                     pontos: 0,
                     
                 }); 
+                if (sala.indiceDesenhadorAtual === 0) {
+                io.to(codigoSala).emit("mostrarModalFim");
+                }
             }
         }, 100); // ⏱️ envia de segundo em segundo
     
@@ -197,6 +200,9 @@ io.on("connection", (socket) => {
                 pontos: pontosGanhos,
                 desenhador: desenhador
             });
+            if (sala.indiceDesenhadorAtual === 0) {
+            io.to(codigoSala).emit("mostrarModalFim");
+}
         } else {
             // enviar palpite errado
             io.to(codigoSala).emit("palpiteRecebido", { username, mensagem });
@@ -242,7 +248,7 @@ function iniciarNovaRonda(codigoSala) {
 
     const ordem = sala.ordemDesenhadores;
     const i = sala.indiceDesenhadorAtual;
-    const fimDoCiclo = i === ordem.length - 1;
+   
 
     const nomeDesenhador = ordem[i];
     
@@ -280,7 +286,6 @@ function iniciarNovaRonda(codigoSala) {
         desenhadorId: sala.jogadores.find(j => j.nome === nomeDesenhador).id,
         nomeDesenhador,
         tempo: tempoRonda,
-        fimDoCiclo 
         
     });
 }
