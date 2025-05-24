@@ -133,6 +133,8 @@ io.on("connection", (socket) => {
                     pontos: 0,
                     
                 }); 
+                sala.indiceDesenhadorAtual = (sala.indiceDesenhadorAtual + 1) % sala.ordemDesenhadores.length;
+
                 if (sala.indiceDesenhadorAtual === 0) {
                 io.to(codigoSala).emit("mostrarModalFim");
                 }
@@ -200,6 +202,8 @@ io.on("connection", (socket) => {
                 pontos: pontosGanhos,
                 desenhador: desenhador
             });
+            sala.indiceDesenhadorAtual = (sala.indiceDesenhadorAtual + 1) % sala.ordemDesenhadores.length;
+
             if (sala.indiceDesenhadorAtual === 0) {
             io.to(codigoSala).emit("mostrarModalFim");
 }
@@ -251,9 +255,6 @@ function iniciarNovaRonda(codigoSala) {
    
 
     const nomeDesenhador = ordem[i];
-    
-    // Atualiza o índice para a próxima ronda
-    sala.indiceDesenhadorAtual = (i + 1) % ordem.length;
 
     // Marca quem é o desenhador
     sala.jogadores.forEach(j => j.desenhador = (j.nome === nomeDesenhador));
