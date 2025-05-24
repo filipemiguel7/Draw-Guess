@@ -334,6 +334,15 @@
     }
 
     
+#modalFim .modal-content table {
+    font-size: 1.2em;
+    width: 100%;
+}
+
+#modalFim .modal-content th,
+#modalFim .modal-content td {
+    padding: 10px;
+}
 
 
 
@@ -584,6 +593,32 @@ function atualizarTabelaPontos(top3) {
     }
 }
 
+function atualizarTabelaFimDoJogo(jogadores) {
+    const container = document.getElementById("tabelaPontuacoes");
+    container.innerHTML = ""; // Limpa antes de atualizar
+
+    const tabela = document.createElement("table");
+    tabela.style.margin = "0 auto";
+    tabela.innerHTML = `
+        <tr>
+            <th>Lugar</th>
+            <th>Jogador</th>
+            <th>Pontos</th>
+        </tr>
+    `;
+
+    jogadores.forEach((jogador, index) => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+            <td>${index + 1}º</td>
+            <td>${jogador.nome}</td>
+            <td>${jogador.pontos}</td>
+        `;
+        tabela.appendChild(linha);
+    });
+
+    container.appendChild(tabela);
+}
 
 
 // FALTA CORRIGIR ESTA LÓGICA PARA QUE SÓ O CRIADOR FAÇA ISTO PARA NÃO HAVER RONDAS DUPLICADAS
@@ -601,23 +636,37 @@ socket.on("comecarRonda", ({ codigoSala }) => {
    
     });
 socket.on("mostrarModalFim", () => {
-  mostrarModalFimDeJogo();
-});
-    function mostrarModalFimDeJogo() {
-    // Ordenar jogadores
-    const jogadores = JSON.parse(localStorage.getItem("jogadoresSala")) || [];
-
-    jogadores.sort((a, b) => b.pontos - a.pontos);
-
-    const tabela = jogadores.map((j, i) => `<p>${i+1}. ${j.nome} - ${j.pontos} pts</p>`).join('');
-    document.getElementById("tabelaPontuacoes").innerHTML = tabela;
-
-    if (jogadores[0]) {
-        document.getElementById("vencedorTexto").innerText = `🥇 Vencedor: ${jogadores[0].nome}`;
-    }
-
+   atualizarTabelaFimDoJogo(jogadores);
+   document.getElementById("vencedorTexto").innerText = `🏆 Vencedor: ${vencedor}`;
     document.getElementById("modalFim").style.display = "flex";
+});
+function atualizarTabelaFimDoJogo(jogadores) {
+    const container = document.getElementById("tabelaPontuacoes");
+    container.innerHTML = ""; // Limpa antes de atualizar
+
+    const tabela = document.createElement("table");
+    tabela.style.margin = "0 auto";
+    tabela.innerHTML = `
+        <tr>
+            <th>Lugar</th>
+            <th>Jogador</th>
+            <th>Pontos</th>
+        </tr>
+    `;
+
+    jogadores.forEach((jogador, index) => {
+        const linha = document.createElement("tr");
+        linha.innerHTML = `
+            <td>${index + 1}º</td>
+            <td>${jogador.nome}</td>
+            <td>${jogador.pontos}</td>
+        `;
+        tabela.appendChild(linha);
+    });
+
+    container.appendChild(tabela);
 }
+
 
 function sairDoJogo() {
     const codigoSala = localStorage.getItem("codigoSala");
@@ -625,6 +674,7 @@ function sairDoJogo() {
 }
 
 function continuarJogo() {
+    document.getElementById("modalFimRonda").style.display = "none";
     document.getElementById("modalFim").style.display = "none";
     socket.emit("resetarRondas", localStorage.getItem("codigoSala")); // novo evento
 }

@@ -129,14 +129,17 @@ io.on("connection", (socket) => {
                 clearInterval(intervalos[codigoSala]);
                 io.to(codigoSala).emit("fimDaRonda", {
                     palavra: sala.palavraAtual,
-                    jogadores: ordenarTop3(sala.jogadores),
+                    jogadores: ordenarTodos(sala.jogadores),
                     pontos: 0,
                     
                 }); 
                 sala.indiceDesenhadorAtual = (sala.indiceDesenhadorAtual + 1) % sala.ordemDesenhadores.length;
 
                 if (sala.indiceDesenhadorAtual === 0) {
-                io.to(codigoSala).emit("mostrarModalFim");
+                io.to(codigoSala).emit("mostrarModalFim", {
+    jogadores: ordenarTodos(sala.jogadores),
+    vencedor: sala.jogadores[0]?.nome || "Ninguém"
+});
                 }
             }
         }, 100); // ⏱️ envia de segundo em segundo
@@ -198,15 +201,17 @@ io.on("connection", (socket) => {
             io.to(codigoSala).emit("fimDaRonda", {
                 palavra: sala.palavraAtual,
                 vencedor: username,
-                jogadores: ordenarTop3(sala.jogadores),
+                jogadores: ordenarTodos(sala.jogadores),
                 pontos: pontosGanhos,
                 desenhador: desenhador
             });
             sala.indiceDesenhadorAtual = (sala.indiceDesenhadorAtual + 1) % sala.ordemDesenhadores.length;
 
             if (sala.indiceDesenhadorAtual === 0) {
-            io.to(codigoSala).emit("mostrarModalFim");
-}
+              io.to(codigoSala).emit("mostrarModalFim", {
+            jogadores: ordenarTodos(sala.jogadores),
+            vencedor: sala.jogadores[0]?.nome || "Ninguém"
+        });}
         } else {
             // enviar palpite errado
             io.to(codigoSala).emit("palpiteRecebido", { username, mensagem });
@@ -214,12 +219,13 @@ io.on("connection", (socket) => {
         
     });
     
-    function ordenarTop3(jogadores) {
-        return [...jogadores]
-            .sort((a, b) => (b.pontos || 0) - (a.pontos || 0))
-            .slice(0, 3)
-            .map(j => ({ nome: j.nome, pontos: j.pontos }));
-    }
+    
+
+    function ordenarTodos(jogadores) {
+    return [...jogadores]
+        .sort((a, b) => (b.pontos || 0) - (a.pontos || 0))
+        .map(j => ({ nome: j.nome, pontos: j.pontos }));
+}
 
 
     socket.on('comecarDesenho', (dados) => {
