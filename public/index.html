@@ -337,7 +337,7 @@
 
 
 #tabelaPontuacoes table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
@@ -371,11 +371,15 @@
 #btncontinuarJogo {
     background-color: #2d9c34;
     color: white;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 
 #btnsairDoJogo {
     background-color: #c42c11;
     color: white;
+      margin-right: 20px;
+    margin-left: 20px;
 }
 
 
@@ -473,8 +477,8 @@
     <div id="modalFim" style="display: none;" class="modal">
         <div class="modal-content" style="width: 65%;">
             <h2>🏁 Fim do jogo!</h2>
-            <div id="tabelaPontuacoes"></div>
             <p id="vencedorTexto"></p>
+            <div id="tabelaPontuacoes"></div>
             <button id="btncontinuarJogo" onclick="continuarJogo()">Continuar</button>
             <button id="btnsairDoJogo" onclick="sairDoJogo()">Terminar Jogo</button>
         </div>
