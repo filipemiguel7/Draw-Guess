@@ -242,9 +242,10 @@ function iniciarNovaRonda(codigoSala) {
 
     const ordem = sala.ordemDesenhadores;
     const i = sala.indiceDesenhadorAtual;
+    const fimDoCiclo = i === ordem.length - 1;
 
     const nomeDesenhador = ordem[i];
-    const fimDoCiclo = (i + 1) === ordem.length;
+    
     // Atualiza o índice para a próxima ronda
     sala.indiceDesenhadorAtual = (i + 1) % ordem.length;
 
