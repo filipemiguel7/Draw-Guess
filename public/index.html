@@ -544,6 +544,8 @@ socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nom
         document.getElementById("guess").disabled = true; 
         possoDesenhar = true;
         document.querySelectorAll(".toolbar *").forEach(el => el.disabled = false);
+        const input = document.getElementById("guess");
+        input.placeholder = `Palavra: ${palavra}`;
     } else {
         desenhadorModal.innerHTML = `É a vez de <strong>${nomeDesenhador}</strong>`;
         palavraModal.innerHTML = "";
