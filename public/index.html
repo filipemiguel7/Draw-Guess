@@ -403,7 +403,7 @@
         <div class="chat">
             <div class="chatin">
               <div id="palpites" class="palpites-lista"></div>
-              <input type="text" id="guess" placeholder="Escreve o teu palpite">
+              <input type="text" id="guess">
             </div>
           </div>
           
@@ -552,6 +552,8 @@ socket.on("novaRondaModal", ({ codigoSala, categoria, palavra, desenhadorId, nom
         document.getElementById("guess").disabled = false; 
         possoDesenhar = false;
         document.querySelectorAll(".toolbar *").forEach(el => el.disabled = true);
+        const input = document.getElementById("guess");
+        input.placeholder = "Escreve aqui o teu palpite";
     }
 
     modal.style.display = "flex";
